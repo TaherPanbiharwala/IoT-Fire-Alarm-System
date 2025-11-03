@@ -1,10 +1,17 @@
 // src/hooks/useSensors.ts
+// src/hooks/useSensors.ts
 import { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 import { Client, Message } from "paho-mqtt";
 
 import { getGasStatus, getTemperatureStatus, getFireStatus } from "../utils/sensorStatus";
 import { notifyDanger } from "../utils/notifications";
+import {
+  firebaseReady,
+  getDatabaseSafe,
+  getFirestoreSafe,
+  DB_STRUCTURE,
+} from "../config/firebase";
 
 // --- types ---
 type MinimalSensor = {
@@ -24,7 +31,7 @@ export function useSensors() {
   const [sensors, setSensors] = useState<SensorMap>({});
   const prevStatusRef = useRef<{ gas?: string; temp?: string; fire?: string }>({});
 
-  // ---------------- WEB: MQTT subscriber (+ optional Firebase writes) ----------------
+    // ---------------- WEB: MQTT subscriber (+ optional Firebase writes) ----------------
   useEffect(() => {
     if (Platform.OS !== "web") return;
 
@@ -46,6 +53,12 @@ export function useSensors() {
       const topic = msg.destinationName;
       const txt = msg.payloadString ?? "";
       console.log("[MQTT] →", topic, txt);
+
+      // ✅ Only parse JSON from the telemetry topic
+      if (!topic.endsWith("/telemetry")) {
+        // e.g. "iot/firealarm/esp32-fire-001/alert" → plain "ALERT", not JSON
+        return;
+      }
 
       try {
         const raw: any = JSON.parse(txt);
@@ -79,7 +92,7 @@ export function useSensors() {
 
         const ts = typeof raw.ts === "number" ? raw.ts : Math.floor(Date.now() / 1000);
 
-        // 1) Update UI state
+        // 1) Update dashboard state
         setSensors({
           [DEVICE_ID]: {
             temperature: temp,
@@ -90,17 +103,11 @@ export function useSensors() {
           },
         });
 
-        // 2) OPTIONAL: write to Firebase
+        // 2) Write to Firebase (if configured)
         try {
-          const {
-            firebaseReady,
-            getDatabaseSafe,
-            getFirestoreSafe,
-            DB_STRUCTURE,
-          } = await import("../config/firebase");
-
           if (!firebaseReady) {
-            console.warn("[FB] not ready – check EXPO_PUBLIC_* env + databaseURL");
+            // mis-configured env or no databaseURL – just show UI, skip DB
+            // console.warn("[FB] not ready – check EXPO_PUBLIC_* envs and databaseURL");
             return;
           }
 
@@ -174,9 +181,7 @@ export function useSensors() {
     client.connect({
       onSuccess: () => {
         console.log("Paho connected");
-        // while debugging, subscribe wide:
-        client.subscribe("iot/firealarm/#");
-        // later you can narrow to `${BASE_TOPIC}/telemetry`
+        client.subscribe("iot/firealarm/#"); // or `${BASE_TOPIC}/telemetry` once you're happy
       },
       useSSL: isHttps,
       reconnect: true,
