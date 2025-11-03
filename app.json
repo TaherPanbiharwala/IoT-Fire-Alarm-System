@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "app",
+    "slug": "app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyBcPnJ2_FH1KfMC9yztw6E6XQxjf8S5554",
+      "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "fire-alarm-system-2718d.firebaseapp.com",
+      "EXPO_PUBLIC_FIREBASE_DATABASE_URL": "https://fire-alarm-system-2718d-default-rtdb.firebaseio.com",
+      "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "fire-alarm-system-2718d",
+      "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET": "fire-alarm-system-2718d.firebasestorage.app",
+      "EXPO_PUBLIC_FIREBASE_SENDER_ID": "1022188340569",
+      "EXPO_PUBLIC_FIREBASE_APP_ID": "1:1022188340569:web:51f2e9aaaf68d01387b848",
+      "EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID": "G-6VRKTJG49V"
+    }
+  }
+}
