@@ -3,8 +3,6 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
-    "skipLibCheck": true,
-    "typeRoots": ["./src/types", "./node_modules/@types"]
-  },
-  "include": ["src", "App.tsx", "app.config.ts", "app.json"]
+    "skipLibCheck": true
+  }
 }

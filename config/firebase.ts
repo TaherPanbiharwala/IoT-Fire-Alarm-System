@@ -62,3 +62,30 @@ export const DB_STRUCTURE = {
     },
   },
 };
+
+// Data types used across the app
+export interface SensorData {
+  value: number;
+  timestamp: number;
+  status: "normal" | "warning" | "danger";
+  location: string;
+  batteryLevel: number;
+}
+
+export interface AlarmData {
+  type: "gas" | "fire" | "temperature";
+  value: number;
+  timestamp: number;
+  status: "active" | "resolved";
+  location: string;
+  resolvedAt?: number;
+  resolvedBy?: string;
+}
+
+export interface SystemStatus {
+  isOnline: boolean;
+  lastUpdate: number;
+  batteryLevel: number;
+  firmwareVersion: string;
+  signalStrength: number;
+}
