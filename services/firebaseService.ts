@@ -1,5 +1,12 @@
 // src/services/firebaseService.ts
-import { ref, onValue, set, serverTimestamp } from "firebase/database";
+// src/services/firebaseService.ts
+import {
+  ref,
+  onValue,
+  set,
+  serverTimestamp as rtdbServerTimestamp,
+} from "firebase/database";
+
 import {
   collection,
   addDoc,
@@ -7,6 +14,7 @@ import {
   orderBy,
   limit as fsLimit,
   getDocs,
+  serverTimestamp as fsServerTimestamp,
 } from "firebase/firestore";
 
 import {
@@ -76,8 +84,8 @@ class FirebaseService {
       const historyRef = collection(fs, DB_STRUCTURE.FIRESTORE.HISTORY[sensorType]);
       await addDoc(historyRef, {
         ...data,
-        timestamp: serverTimestamp(),
-      });
+        timestamp: fsServerTimestamp(),
+        });
     } catch (error) {
       console.error("Error saving sensor history:", error);
     }
@@ -92,8 +100,8 @@ class FirebaseService {
       const alarmsRef = collection(fs, DB_STRUCTURE.FIRESTORE.HISTORY.ALARMS);
       await addDoc(alarmsRef, {
         ...alarmData,
-        timestamp: serverTimestamp(),
-      });
+        timestamp: fsServerTimestamp(),
+        });
     } catch (error) {
       console.error("Error saving alarm history:", error);
     }
@@ -135,8 +143,8 @@ class FirebaseService {
       const statusRef = ref(db, DB_STRUCTURE.REALTIME.SYSTEM.STATUS);
       await set(statusRef, {
         ...status,
-        lastUpdate: serverTimestamp(),
-      });
+        lastUpdate: rtdbServerTimestamp(),
+        });
     } catch (error) {
       console.error("Error updating system status:", error);
     }
