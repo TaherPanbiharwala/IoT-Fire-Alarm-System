@@ -70,6 +70,7 @@ export interface SystemStatus {
 }
 
 // Paths used throughout the app
+// src/config/firebase.ts
 export const DB_STRUCTURE = {
   REALTIME: {
     SENSORS: {
@@ -87,11 +88,11 @@ export const DB_STRUCTURE = {
   },
   FIRESTORE: {
     HISTORY: {
-      GAS:         "history/gas",
-      FIRE:        "history/fire",
-      TEMPERATURE: "history/temperature",
-      HUMIDITY:    "history/humidity",
-      ALARMS:      "history/alarms",
+      GAS:         "history_gas",
+      FIRE:        "history_fire",
+      TEMPERATURE: "history_temperature",
+      HUMIDITY:    "history_humidity",
+      ALARMS:      "history_alarms",
     },
   },
 };
